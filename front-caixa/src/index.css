@@ -1,0 +1,53 @@
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=PT+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+@import "tailwindcss";
+
+@theme{
+  --font-base:  "Oswald", sans-serif;
+  --font-secundaria: "PT Sans", sans-serif;
+
+  --color-color-base-clara: #F5F5F5;
+  --color-color-dominante-azul: #1A237E;
+  --color-color-secundaria-azul: #42A5F5;
+  --color-color-secundaria-marrom: #424242;
+  --color-color-disponivel: #81C784;
+
+}
+
+*,
+::after,
+::before,
+::backdrop,
+::file-selector-button {
+  box-sizing: border-box; 
+  font-family:"PT Sans", sans-serif; 
+}
+
+
+@layer base {
+  .google-map * {
+    border-style: none;
+  }
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-size: inherit;
+  font-weight: inherit;
+  font-family: "Noto Sans JP", sans-serif;
+}
+
+img,
+svg,
+video,
+canvas,
+audio,
+iframe,
+embed,
+object {
+  display: block;
+}
