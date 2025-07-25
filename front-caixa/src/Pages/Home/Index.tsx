@@ -2,9 +2,38 @@ import casaSol from "../../assets/casa-sol.jpg";
 import { FaHome } from "react-icons/fa";
 import CardInfo from "../../components/cards/CardInfoWithData";
 import Footer from "../../components/footer/Footer";
+import type { ImovelDataCard } from "../../types/ImovelData";
+import { PiMaskSadDuotone } from "react-icons/pi";
+import { useState } from "react";
+import api from "../../services/Api";
 
+interface ImovelDataProps {
+  items: ImovelDataCard[];
+  page?: number;
+  pageSize?: number;
+  totalItems?: number;
+  totalPages?: number;
+}
 
 function Home() {
+
+  const [cidade, setCidade] = useState("");
+  const [imovel, setImovel] = useState<ImovelDataProps>({items:[]});
+  const [page, setPage] = useState(1)
+  const [click, setClick] = useState(false);
+  
+
+  async function getImoveis(){
+     const response = await api.get(
+       `/api/v1/Imoveis/obter_lista_imoveis?Cidade=${cidade}&Page=${page}&PageSize=16&GetAll=false&Sort=string`
+     );
+
+     setPage(2);
+     setImovel(response.data);
+     setClick(true);
+  }
+
+
   return (
     <div className="bg-color-base-clara max-h-[100%] max-w-[100%] min-w-[300px]">
       <div className="w-full relative min-w-[300px] min-h-[600px] ">
@@ -59,6 +88,7 @@ function Home() {
           type="text"
           placeholder="digite a cidade"
           className="px-4 w-[62%] h-[45px] max-h-[100px] bg-white rounded-md text-black mr-10"
+          onChange={(e) => setCidade(e.target.value)}
         />
       </div>
 
@@ -91,20 +121,40 @@ function Home() {
           </select>
         </label>
 
-        <button className="bg-color-dominante-azul rounded-2xl pr-6 pl-6 te mr-4 text-2xl max-h-10 font-bold text-white cursor-pointer hover:bg-color-secundaria-azul">
+        <button
+          className="bg-color-dominante-azul rounded-2xl pr-6 pl-6
+        mr-4 text-2xl max-h-10 font-bold text-white cursor-pointer
+        hover:bg-color-secundaria-azul"
+          onClick={getImoveis}
+        >
           Buscar
         </button>
       </div>
 
       <div className="m-5 mb-0 flex flex-wrap gap-11 justify-center">
-        <CardInfo />
-        <CardInfo />
-        <CardInfo />
-        <CardInfo />
-        <CardInfo />
-        <CardInfo />
-        <CardInfo />
-        <CardInfo />
+        {imovel?.items && click ?(
+          imovel.items.length > 0 ? (
+            imovel.items.map((i) => (
+              <div key={i.id}>
+                <CardInfo item={i} />
+              </div>
+            ))
+          ) : (
+            <div>
+              <div className="flex flex-col justify-center items-center pt-[80px] pb-[500px] text-3xl font-extrabold text-color-dominante-azul">
+                <PiMaskSadDuotone className="text-9xl mb-8" />
+                <p>
+                  A cidade digitada não Possui imóveis na caixa para consulta e
+                  venda
+                </p>
+              </div>
+            </div>
+          )
+        ) : (
+          <div className="p-[300px] text-transparent">
+            <p>__</p>
+          </div>
+        )}
       </div>
 
       <Footer />

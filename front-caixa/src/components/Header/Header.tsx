@@ -13,12 +13,17 @@ function Header() {
   }
 
   return (
-    <div className="h-[50px] mt-7 w-[96%] fixed z-50">
-      <div className="bg-color-dominante-azul text-white rounded-[10px] flex flex-row items-center justify-between p-4">
+    <div className="h-[50px] w-full fixed z-50">
+      <div
+      className="bg-color-base-clara text-color-dominante-azul
+      flex flex-row items-center
+      justify-between p-4 "
+      style={{ boxShadow: "0px 2px 5px #1f1f1f" }}
+      >
         <div
-          className="bg-white rounded-[5px] pl-1 pr-1
+          className=" rounded-[5px] pl-1 pr-1
         transform transition-transform duration-300 
-        hover:scale-105 shadow-md"
+        hover:scale-105"
         >
           <Link
             to={"/"}
@@ -35,7 +40,7 @@ function Header() {
         </div>
         <button
           className="cursor-pointer text-2xl  transform 
-      transition-transform duration-300 hover:scale-110 shadow-md"
+      transition-transform duration-300 hover:scale-110"
           onClick={openCLock}
         >
           <IoIosAlarm />
