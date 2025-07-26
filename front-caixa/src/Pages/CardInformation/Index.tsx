@@ -1,4 +1,4 @@
-import { useParams, useLocation, Link, Navigate, Links } from "react-router-dom";
+import { useParams, useLocation, Link,} from "react-router-dom";
 import Header from "../../components/Header/Header";
 import Footer from "../../components/footer/Footer";
 import { RiVerifiedBadgeFill } from "react-icons/ri";
@@ -81,7 +81,7 @@ function CardInfoWithData() {
           </p>
         </div>
 
-        <div className="border-2 max-w-[400px] w-[100%] flex flex-col justify-between h-[300px] border-color-dominante-azul rounded-2xl px-10">
+        <div className="border-2 max-w-[400px] w-[100%] flex flex-col justify-between h-[300px] border-color-dominante-azul rounded-2xl px-5">
           <div>
             <p className="font-extrabold text-black text-2xl font-secundaria mt-2">
               Compre por:
@@ -124,7 +124,7 @@ function CardInfoWithData() {
 
             <p className="text-[20px] text-black mx-4  rounded-2xl p-2 border-4 border-color-dominante-azul">
               <span className="font-extrabold">Área Terreno: </span> "
-              {imovel?.areaTerreno}
+              {imovel?.areaTerreno}"
             </p>
 
             <p className="text-[20px] text-black mx-4  rounded-2xl p-2 border-4 border-color-dominante-azul">

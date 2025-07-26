@@ -5,34 +5,33 @@ import Footer from "../../components/footer/Footer";
 import type { ImovelDataCard } from "../../types/ImovelData";
 import { PiMaskSadDuotone } from "react-icons/pi";
 import { useState } from "react";
-import api from "../../services/Api";
+import Pagination from "../../components/paginations/Pagination";
+import getImoveis from "../../services/imoveis";
 
 interface ImovelDataProps {
   items: ImovelDataCard[];
   page?: number;
-  pageSize?: number;
-  totalItems?: number;
-  totalPages?: number;
+  pageSize: number;
+  totalItems: number;
+  totalPages: number;
 }
 
 function Home() {
-
   const [cidade, setCidade] = useState("");
-  const [imovel, setImovel] = useState<ImovelDataProps>({items:[]});
-  const [page, setPage] = useState(1)
-  const [click, setClick] = useState(false);
-  
+  const [imovel, setImovel] = useState<ImovelDataProps>({
+    items: [],
+    totalItems: 0,
+    pageSize: 0,
+    totalPages: 0,
+  });
+  const [click, setClic] = useState(false);
 
-  async function getImoveis(){
-     const response = await api.get(
-       `/api/v1/Imoveis/obter_lista_imoveis?Cidade=${cidade}&Page=${page}&PageSize=16&GetAll=false&Sort=string`
-     );
+  async function getImoveisCaixa(idPage: number) {
+    setImovel(await getImoveis(cidade, idPage));
+    setClic(true);
 
-     setPage(2);
-     setImovel(response.data);
-     setClick(true);
+    console.log(imovel.items.length);
   }
-
 
   return (
     <div className="bg-color-base-clara max-h-[100%] max-w-[100%] min-w-[300px]">
@@ -125,22 +124,37 @@ function Home() {
           className="bg-color-dominante-azul rounded-2xl pr-6 pl-6
         mr-4 text-2xl max-h-10 font-bold text-white cursor-pointer
         hover:bg-color-secundaria-azul"
-          onClick={getImoveis}
+          onClick={() => getImoveisCaixa(1)}
         >
           Buscar
         </button>
       </div>
 
-      <div className="m-5 mb-0 flex flex-wrap gap-11 justify-center">
-        {imovel?.items && click ?(
-          imovel.items.length > 0 ? (
-            imovel.items.map((i) => (
-              <div key={i.id}>
-                <CardInfo item={i} />
-              </div>
-            ))
-          ) : (
+      <div>
+        {imovel?.totalItems > 0 ? (
+          <div className="m-5 items-center mb-0 flex flex-col flex-wrap gap-11 justify-center">
             <div>
+              <Pagination
+                page={imovel?.page}
+                totalPages={imovel.totalPages}
+                totalItems={imovel.totalItems}
+                pageSize={imovel.pageSize}
+                cidade={cidade}
+                onAutalize={getImoveisCaixa}
+              />
+            </div>
+
+            <div className="mb-0 flex flex-wrap gap-11 justify-center">
+              {imovel.items.map((i) => (
+                <div key={i.id}>
+                  <CardInfo item={i} />
+                </div>
+              ))}
+            </div>
+          </div>
+        ) : (
+          <div>
+            {click ? (
               <div className="flex flex-col justify-center items-center pt-[80px] pb-[500px] text-3xl font-extrabold text-color-dominante-azul">
                 <PiMaskSadDuotone className="text-9xl mb-8" />
                 <p>
@@ -148,11 +162,11 @@ function Home() {
                   venda
                 </p>
               </div>
-            </div>
-          )
-        ) : (
-          <div className="p-[300px] text-transparent">
-            <p>__</p>
+            ) : (
+              <div className="p-[300px] text-transparent">
+                <p>__</p>
+              </div>
+            )}
           </div>
         )}
       </div>
